@@ -1,6 +1,8 @@
 package fr.afaucogney.homedatagrapher.mobile.testtoothpick
 
 import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.argWhere
+import com.nhaarman.mockitokotlin2.verify
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -42,12 +44,28 @@ open class FooTestAllMocked {
     }
 
     @Test
-    fun prout() {
+    fun proutOK() {
 
         Mockito.`when`(mBar.prout(any())).thenReturn(4)
         Mockito.`when`(mMockable.prout(any())).then { println("MOCKABLE ==> 42") }
 
         sutFoo.prout("1")
+
+        verify(mBar).prout(argWhere { it == "1" })
     }
+
+    @Test
+    fun proutKO() {
+
+        Mockito.`when`(mBar.prout(any())).thenReturn(4)
+        Mockito.`when`(mMockable.prout(any())).then { println("MOCKABLE ==> 42") }
+
+        sutFoo.prout("1")
+
+        verify(mBar).prout(argWhere { it == "1" })
+        verify(mMockable).prout(argWhere { it == 1 })
+    }
+
+
 
 }
